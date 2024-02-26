@@ -1,0 +1,63 @@
+{% load static %}
+
+<!DOCTYPE html>
+<!-- Created By CodingLab - www.codinglabweb.com -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <title> Responsive Registration Form | CodingLab </title>
+    <link rel="stylesheet" href="{% static 'signup.css' %}">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<body>
+  <div class="container">
+    <div class="title">Registration</div>
+    <div class="content">
+    <form id="signupForm" action="{% url 'main:signup' %}" method="post">
+        {% csrf_token %}
+        <div class="user-details">
+            <div class="input-box">
+                <span class="details">Full Name *</span>
+                <input type="text" placeholder="Enter your name" name="fullname" required>
+            </div>
+            <div class="input-box">
+                <span class="details">Username *</span>
+                <input type="text" placeholder="Enter your username" name="username" required>
+            </div>
+            <div class="input-box">
+                <span class="details">Email</span>
+                <input type="email" placeholder="Enter your email" name="email" >
+            </div>
+            <div class="input-box">
+                <span class="details">Enter your phone Number</span>
+                <input type="text" placeholder="+998991234567" name="phone" >
+            </div>
+            <div class="input-box">
+                <span class="details">Password *</span>
+                <input type="password" placeholder="Enter your password" name="password1" id="password1" required>
+            </div>
+            <div class="input-box">
+                <span class="details">Confirm Password *</span>
+                <input type="password" placeholder="Confirm your password" name="password2" id="password2" required>
+            </div>
+        </div>
+        <div class="button">
+            <input type="submit" value="Register">
+        </div>
+    </form>
+    
+    <script>
+    document.getElementById('signupForm').addEventListener('submit', function(event) {
+        var password = document.getElementById('password1').value;
+        var confirmPassword = document.getElementById('password2').value;
+    
+        if (password !== confirmPassword) {
+            alert('Passwords do not match.');
+            event.preventDefault(); // Prevent form submission
+        }
+    });
+    </script>
+    </div>
+  </div>
+</body>
+</html>
