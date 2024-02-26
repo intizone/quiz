@@ -11,16 +11,11 @@ def signup(request):
         email = request.POST['email']
         password = request.POST['password1']
         phone = request.POST['phone']
-        if models.Avtor.objects.filter(username=username).exists():
+        if models.User.objects.filter(username=username).exists():
             return redirect('main:signup')
         else:
-            models.Avtor.objects.create(
-                username=username,
-                email=email,
-                password=password,
-                fullname=fullname,
-                phone=phone
-            )
+            user = models.User.objects.create_user(username=username, password=password)
+            login(request, user)
             return redirect('main:signin')
     return render(request, 'signup.html')
 
@@ -32,17 +27,17 @@ def signin(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('main:quizzes')
+            return redirect('main:cards')
         else:
             return HttpResponse('Invalid username or password')
     return render(request, 'signin.html')
 
 
 @login_required
-def quizzes(request):
+def cards(request):
     if request.user.is_authenticated:
-        quizzes = models.Quiz.objects.filter(author=request.user)
-        return render(request, 'quizzes.html', {'quizzes': quizzes})
+        cards = models.Quiz.objects.filter(author=request.user)
+        return render(request, 'cards.html', {'cards': cards})
     else:
         return redirect('main:signin')
 
