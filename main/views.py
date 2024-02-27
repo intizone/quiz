@@ -47,12 +47,12 @@ def quizzes(request):
 
 
 @login_required
-def create_quiz(request):
+def quiz_create(request):
     if request.method == 'POST':
         title = request.POST['title']
         description = request.POST['description']
         author = request.user
         quiz = models.Quiz.objects.create(title=title, description=description, author=author)
         return redirect('main:quizzes')
-    return render(request, 'create_quiz.html')
+    return render(request, 'quiz_create.html')
 
