@@ -32,7 +32,7 @@ def signin(request):
             return HttpResponse('Invalid username or password')
     return render(request, 'signin.html')
 
-
+@login_required
 def sign_out(request):
     logout(request)
     return redirect('main:signin')
