@@ -27,20 +27,32 @@ def signin(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('main:cards')
+            return redirect('main:quizzes')
         else:
             return HttpResponse('Invalid username or password')
     return render(request, 'signin.html')
 
 
-@login_required
-def cards(request):
-    if request.user.is_authenticated:
-        cards = models.Quiz.objects.filter(author=request.user)
-        return render(request, 'cards.html', {'cards': cards})
-    else:
-        return redirect('main:signin')
-
 def sign_out(request):
     logout(request)
     return redirect('main:signin')
+
+@login_required
+def quizzes(request):
+    if request.user.is_authenticated:
+        quizzes = models.Quiz.objects.filter(author=request.user)
+        return render(request, 'quizzes.html', {'quizzes': quizzes})
+    else:
+        return redirect('main:signin')
+
+
+@login_required
+def create_quiz(request):
+    if request.method == 'POST':
+        title = request.POST['title']
+        description = request.POST['description']
+        author = request.user
+        quiz = models.Quiz.objects.create(title=title, description=description, author=author)
+        return redirect('main:quizzes')
+    return render(request, 'create_quiz.html')
+
